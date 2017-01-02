@@ -19,7 +19,7 @@ const config = {
       'react', 'react-dom', 'react-router-dom',
       'prop-types', 'classnames', 'whatwg-fetch',
     ],
-    app: './src/index',
+    app: ['normalize.css', './src/index'],
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -41,6 +41,27 @@ const config = {
         ],
         exclude: /node_modules/,
         loader: 'babel-loader',
+      },
+      {
+        test: /\.css$/,
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: [
+            {
+              loader: 'css-loader',
+              options: {
+                minimize: isProduction,
+                modules: true,
+              },
+            },
+            {
+              loader: 'postcss-loader',
+              options: {
+                plugins: () => [autoprefixer],
+              },
+            },
+          ],
+        }),
       },
       {
         test: /\.less$/,

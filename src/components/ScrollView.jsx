@@ -85,6 +85,20 @@ class ScrollView extends React.PureComponent {
       this.wrap.scrollTop = scrollTop;
     }
   }
+  prePage = () => {
+    const { scrollTop, offsetHeight } = this.wrap;
+    if (scrollTop !== 0) {
+      this.wrap.scrollTop -= offsetHeight;
+    }
+  }
+  nextPage = () => {
+    const { scrollHeight, scrollTop, offsetHeight } = this.wrap;
+    const scrollDist = scrollHeight - offsetHeight;
+    const scrollFromBottom = scrollDist - scrollTop;
+    if (scrollFromBottom !== 0) {
+      this.wrap.scrollTop += offsetHeight;
+    }
+  }
   render() {
     const { children, hide } = this.props;
     const { ly, sy, transition } = this.state;

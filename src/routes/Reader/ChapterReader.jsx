@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import cn from './ChapterReader.less';
 import Tappable from '../../components/Tappable';
+import ScrollView from '../../components/ScrollView';
 
 class ChapterReader extends React.PureComponent {
   state = {}
@@ -17,27 +18,29 @@ class ChapterReader extends React.PureComponent {
     return this.handleMidTap(e);
   }
   handleTopTap = () => {
-
+    this.scrollView.prePage();
   }
   handleMidTap = () => {
     this.props.requestListShow();
   }
   handleBottomTap = () => {
-
+    this.scrollView.nextPage();
   }
   render() {
     const { title, content } = this.props.chapter;
     return (
-      <Tappable onTap={this.handleTap}>
-        <div className={cn.container}>
-          <div className={cn.title}>{title}</div>
-          <pre className={cn.content}>
-            {content.split('\n').map((p, i) => (
-              <p key={i} className={cn.paragraph}>{p}</p>
-            ))}
-          </pre>
-        </div>
-      </Tappable>
+      <ScrollView ref={r => (this.scrollView = r)}>
+        <Tappable onTap={this.handleTap}>
+          <div className={cn.container}>
+            <div className={cn.title}>{title}</div>
+            <pre className={cn.content}>
+              {content.split('\n').map((p, i) => (
+                <p key={i} className={cn.paragraph}>{p}</p>
+              ))}
+            </pre>
+          </div>
+        </Tappable>
+      </ScrollView>
     );
   }
 }
