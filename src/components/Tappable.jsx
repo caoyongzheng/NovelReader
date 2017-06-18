@@ -122,7 +122,7 @@ class Tappable extends React.PureComponent {
 Tappable.defaultProps = {
   onTap: () => {},
   touchBoundary: 5,
-  tapDelay: 50,
+  tapDelay: 75,
   activeClass: '',
 };
 
