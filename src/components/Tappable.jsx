@@ -86,7 +86,7 @@ class Tappable extends React.PureComponent {
     ]).then(({ active, clearTime }) => {
       if (clearTime) window.clearTimeout(this.timeout);
       if (this.state.active) this.setState({ active: false });
-      if (active) sendClick(e.target, e);
+      if (!this.moved && active) sendClick(e.target, e);
     });
   }
   onTouchCancel = () => {
@@ -122,7 +122,7 @@ class Tappable extends React.PureComponent {
 Tappable.defaultProps = {
   onTap: () => {},
   touchBoundary: 5,
-  tapDelay: 75,
+  tapDelay: 50,
   activeClass: '',
 };
 
