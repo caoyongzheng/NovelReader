@@ -19,17 +19,16 @@ class App extends React.PureComponent {
     const url = 'http://api.zhuishushenqi.com/cats/lv2/statistics';
     fetch(`${process.env.PROXY_API}?url=${url}`, {
       mode: 'cors',
-    })
-      .then(res => res.json())
-      .then(({ male, female, press }) => {
-        this.setState({
-          category: {
-            category: { male, female, press },
-            getted: true,
-          },
-        });
-        if (cb) cb();
+    }).then(res => res.json())
+    .then(({ male, female, press }) => {
+      this.setState({
+        category: {
+          category: { male, female, press },
+          getted: true,
+        },
       });
+      if (cb) cb();
+    });
   };
   render() {
     const { category } = this.state;

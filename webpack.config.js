@@ -8,7 +8,7 @@ const DashboardPlugin = require('webpack-dashboard/plugin');
 
 const isProduction = process.env.NODE_ENV === 'production';
 
-const publicPath = isProduction ? '/NovelReader/dist/' : '/dist/'
+const publicPath = isProduction ? '/NovelReader/dist/' : '/dist/';
 
 const config = {
   entry: {

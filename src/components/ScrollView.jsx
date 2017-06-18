@@ -66,7 +66,10 @@ class ScrollView extends React.PureComponent {
       >
         <div
           className={cx(cn.loader, { [cn.transition]: transition })}
-          style={{ transform: `translateY(${ly}px)` }}
+          style={{
+            transform: `translateY(${ly}px)`,
+            WebkitTransform: `translateY(${ly}px)`,
+          }}
         >
           <img
             src={loadingIcon}
@@ -79,7 +82,10 @@ class ScrollView extends React.PureComponent {
             cx(cn.scrollContent, { [cn.transition]: transition })
           }
           ref={wrap => (this.wrap = wrap)}
-          style={{ transform: `translateY(${sy}px)` }}
+          style={{
+            transform: `translateY(${sy}px)`,
+            WebkitTransform: `translateY(${sy}px)`,
+          }}
           onTouchStart={this.onTouchStart}
           onTouchMove={this.onTouchMove}
           onTouchEnd={this.onTouchEnd}
