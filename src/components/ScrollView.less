@@ -1,0 +1,84 @@
+.scrollview {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  .loader {
+    position: absolute;
+    pointer-events: none;
+    font-size: 18px;
+    color: #000000;
+    width: 100%;
+    text-align: center;
+    top: -50px;
+    height: 50px;
+    line-height: 50px;
+    img {
+      display: inline-block;
+      vertical-align: middle;
+      width: 25px;
+      height: 25px;
+    }
+    .spinner {
+      animation: spinner 1s step-start infinite;
+    }
+  }
+  .transition {
+    transition: transform 150ms ease-in;
+  }
+  .scrollContent {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+@keyframes spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  8.333333333333332% {
+    transform: rotate(30deg);
+  }
+
+  16.666666666666664% {
+    transform: rotate(60deg);
+  }
+
+  25% {
+    transform: rotate(90deg);
+  }
+
+  33.33333333333333% {
+    transform: rotate(120deg);
+  }
+
+  41.66666666666667% {
+    transform: rotate(150deg);
+  }
+
+  50% {
+    transform: rotate(180deg);
+  }
+
+  58.333333333333336% {
+    transform: rotate(210deg);
+  }
+
+  66.66666666666666% {
+    transform: rotate(240deg);
+  }
+
+  75% {
+    transform: rotate(270deg);
+  }
+
+  83.33333333333334% {
+    transform: rotate(300deg);
+  }
+
+  91.66666666666666% {
+    transform: rotate(330deg);
+  }
+}

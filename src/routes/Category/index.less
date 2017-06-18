@@ -1,0 +1,44 @@
+.kind {
+  width: 100%;
+  font-size: 0px;
+  .name {
+    height: 50px;
+    line-height: 50px;
+    font-size: 14px;
+    color: #808080;
+    padding: 0 14px;
+  }
+  .items {
+    width: 100%;
+  }
+  .item {
+    position: relative;
+    display: inline-block;
+    width: 33.3333333%;
+    text-align: center;
+    height: 60px;
+    line-height: 1.5;
+    border: solid 1px #EEE;
+    border-left: none;
+    box-sizing: border-box;
+    margin-top: -1px;
+    &:nth-child(3n) {
+      border-right: none;
+    }
+    .center {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 100%;
+      transform: translate(-50%, -50%);
+    }
+    .kindName {
+      font-size: 18px;
+      color: #000000;
+    }
+    .bookCount {
+      font-size: 14px;
+      color: #999999;
+    }
+  }
+}
