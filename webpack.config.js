@@ -8,6 +8,8 @@ const DashboardPlugin = require('webpack-dashboard/plugin');
 
 const isProduction = process.env.NODE_ENV === 'production';
 
+const publicPath = isProduction ? '/NovelReader/dist/' : '/dist/'
+
 const config = {
   entry: {
     vendor: [
@@ -19,7 +21,7 @@ const config = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name]-[chunkhash:8].js',
-    publicPath: '/dist/',
+    publicPath,
   },
   module: {
     rules: [
@@ -97,7 +99,7 @@ const config = {
     contentBase: path.join(__dirname, 'dist'),
     port: 9000,
     compress: true,
-    publicPath: '/dist/',
+    publicPath,
     disableHostCheck: true,
   },
 };

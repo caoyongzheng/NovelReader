@@ -33,7 +33,6 @@ class App extends React.PureComponent {
   };
   render() {
     const { category } = this.state;
-    console.log(category);
     return (
       <Router>
         <div style={{ width: '100%', height: '100%' }}>
