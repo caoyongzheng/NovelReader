@@ -2,36 +2,60 @@ import React from 'react';
 import { HashRouter as Router, Route, Redirect } from 'react-router-dom';
 import Bookshelf from './routes/Bookshelf';
 import Category from './routes/Category';
+import CategoryDetail from './routes/CategoryDetail';
 import Ranking from './routes/Ranking';
 
 class App extends React.PureComponent {
   state = {
     category: {
       getted: false,
-      category: {
-        male: [],
-        female: [],
-        press: [],
-      },
+      male: [],
+      female: [],
+      press: [],
+    },
+    categoryL2: {
+      getted: false,
+      male: [],
+      female: [],
+      press: [],
     },
   };
-  getCategoryData = (cb) => {
+  getCategory = (cb) => {
     const url = 'http://api.zhuishushenqi.com/cats/lv2/statistics';
-    fetch(`${process.env.PROXY_API}?url=${url}`, {
+    return fetch(`${process.env.PROXY_API}?url=${url}`, {
       mode: 'cors',
     }).then(res => res.json())
     .then(({ male, female, press }) => {
       this.setState({
         category: {
-          category: { male, female, press },
+          male,
+          female,
+          press,
           getted: true,
         },
       });
       if (cb) cb();
     });
   };
+  getCategoryL2 = (cb) => {
+    const url = 'http://api.zhuishushenqi.com/cats/lv2';
+    return fetch(`${process.env.PROXY_API}?url=${url}`, {
+      mode: 'cors',
+    }).then(res => res.json())
+    .then(({ male, female, press }) => {
+      this.setState({
+        categoryL2: {
+          male,
+          female,
+          press,
+          getted: true,
+        },
+      });
+      if (cb) cb();
+    });
+  }
   render() {
-    const { category } = this.state;
+    const { category, categoryL2 } = this.state;
     return (
       <Router>
         <div style={{ width: '100%', height: '100%' }}>
@@ -41,14 +65,29 @@ class App extends React.PureComponent {
             render={({ history: { push, replace } }) => <Bookshelf push={push} replace={replace} />}
           />
           <Route
+            exact
             path="/category"
-            render={({ history: { push, replace } }) =>
-              (<Category
+            render={({ history: { push, replace, location } }) => (
+              <Category
+                search={location.search}
+                replace={replace}
+                push={push}
+                category={category}
+                getCategory={this.getCategory}
+              />
+            )}
+          />
+          <Route
+            path="/category/detail"
+            render={({ history: { push, replace, location } }) => (
+              <CategoryDetail
+                search={location.search}
                 push={push}
                 replace={replace}
-                {...category}
-                getData={this.getCategoryData}
-              />)}
+                categoryL2={categoryL2}
+                getCategoryL2={this.getCategoryL2}
+              />
+            )}
           />
           <Route
             path="/ranking"

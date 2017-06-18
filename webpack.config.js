@@ -94,6 +94,7 @@ const config = {
     }),
     new DashboardPlugin(),
   ],
+  devtool: isProduction ? 'source-map' : 'eval',
   devServer: {
     host: '0.0.0.0',
     contentBase: path.join(__dirname, 'dist'),
