@@ -20,10 +20,10 @@ class Category extends React.PureComponent {
       this.scroller.begginLoad();
     }
   }
-  handleTap = (cat, major) => {
+  handleTap = (gender, major) => {
     const { search, push } = this.props;
     const qsObj = qs.parse(search);
-    qsObj.cat = cat;
+    qsObj.gender = gender;
     qsObj.major = major;
     push(`/category/detail?${qs.stringify(qsObj)}`);
   }

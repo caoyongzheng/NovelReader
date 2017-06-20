@@ -85,6 +85,7 @@ class App extends React.PureComponent {
                 push={push}
                 replace={replace}
                 categoryL2={categoryL2}
+                getCategoryBookList={this.getCategoryBookList}
                 getCategoryL2={this.getCategoryL2}
               />
             )}

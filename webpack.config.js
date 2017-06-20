@@ -5,10 +5,13 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 const DashboardPlugin = require('webpack-dashboard/plugin');
+const getHostIp = require('./scripts/getHostIp');
 
 const isProduction = process.env.NODE_ENV === 'production';
-
 const publicPath = isProduction ? '/NovelReader/dist/' : '/dist/';
+const port = 9000;
+
+console.log(`open: http://${getHostIp()}:${port}/dist/`);
 
 const config = {
   entry: {
@@ -36,6 +39,7 @@ const config = {
         include: [
           path.resolve(__dirname, 'src'),
         ],
+        exclude: /node_modules/,
         loader: 'babel-loader',
       },
       {
@@ -98,10 +102,11 @@ const config = {
   devServer: {
     host: '0.0.0.0',
     contentBase: path.join(__dirname, 'dist'),
-    port: 9000,
+    port,
     compress: true,
     publicPath,
     disableHostCheck: true,
+    noInfo: true,
   },
 };
 
