@@ -7,9 +7,9 @@ import isEqual from 'lodash/isEqual';
 import cn from './index.less';
 import Header from '../../components/Header';
 import Body from '../../components/Body';
-import ScrollView from '../../components/ScrollView';
 import Filter from './Filter';
 import BookList from './BookList';
+import handleReject from '../../utils/handleReject';
 
 const filter1 = [
   { key: 'hot', name: '热门' },
@@ -22,8 +22,6 @@ const filter1 = [
 class CategoryDetail extends React.PureComponent {
   state = {
     categoryBooks: {},
-    categoryBookList: {},
-    categoryBookListEnd: false,
   }
   componentDidMount() {
     const { getCategoryL2, categoryL2 } = this.props;
@@ -40,6 +38,18 @@ class CategoryDetail extends React.PureComponent {
       this.requestLoading(key);
     }
   }
+  onScrollBottom = (key) => {
+    if (this.state[`isGetting_${key}`]) return;
+    this.setState({ [`isGetting_${key}`]: true });
+    const obj = get(this.state.categoryBooks, [key], { list: [] });
+    this.getCategoryBookList({
+      ...qs.parse(key),
+      limit: 15,
+      start: obj.list.length,
+    }).then(() => {
+      this.setState({ [`isGetting_${key}`]: false });
+    });
+  }
   onFilter1Select = (key) => {
     const { search, replace } = this.props;
     const searchObj = qs.parse(search);
@@ -50,7 +60,7 @@ class CategoryDetail extends React.PureComponent {
     const { search, replace } = this.props;
     const searchObj = qs.parse(search);
     if (key === 'all') {
-      delete searchObj.minor;
+      searchObj.minor = '';
     } else {
       searchObj.minor = key;
     }
@@ -64,19 +74,15 @@ class CategoryDetail extends React.PureComponent {
       mode: 'cors',
     }).then(res => res.json())
     .then(({ books, total }) => {
-      const { categoryBooks } = this.state;
+      const categoryBooks = { ...this.state.categoryBooks };
       const key = this.getCategoryKey(qs.stringify(searchObj));
       const catObj = categoryBooks[key] || {};
       catObj.list = (catObj.list || []).slice(0, searchObj.start).concat(books);
       catObj.end = total <= catObj.list.length;
-      this.setState({
-        categoryBooks: {
-          ...categoryBooks,
-          [key]: catObj,
-        },
-      });
+      categoryBooks[key] = catObj;
+      this.setState({ categoryBooks });
       if (cb) cb();
-    });
+    }).catch(handleReject);
   }
   getCategoryKey = (search) => {
     const { type = '', gender = '', major = '', minor = '' } = qs.parse(search);
@@ -157,14 +163,16 @@ class CategoryDetail extends React.PureComponent {
           <div className={cn.booklist}>
             {
               Object.keys(categoryBooks).map(k => (
-                <ScrollView
+                <BookList
                   key={k}
+                  id={k}
                   hide={!isEqual(qs.parse(k), activeObj)}
                   loading={this.state[`${k}_loading`]}
-                  requestLoading={() => this.requestLoading(k)}
-                >
-                  <BookList list={categoryBooks[k].list} />
-                </ScrollView>
+                  list={categoryBooks[k].list}
+                  requestLoading={this.requestLoading}
+                  onScrollBottom={this.onScrollBottom}
+                  getting={!!this.state[`isGetting_${k}`]}
+                />
               ))
             }
           </div>

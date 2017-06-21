@@ -69,6 +69,16 @@ class ScrollView extends React.PureComponent {
       }
     }
   }
+  onScroll = () => {
+    if (this.props.onScrollBottom) {
+      const { scrollHeight, scrollTop, offsetHeight } = this.wrap;
+      const scrollDist = scrollHeight - offsetHeight;
+      const scrollFromBottom = scrollDist - scrollTop;
+      if (scrollFromBottom <= this.props.bottomOffset) {
+        this.props.onScrollBottom(scrollFromBottom);
+      }
+    }
+  }
   scrollTo = (scrollTop) => {
     if (this.wrap) {
       this.wrap.scrollTop = scrollTop;
@@ -106,6 +116,7 @@ class ScrollView extends React.PureComponent {
           onTouchStart={this.onTouchStart}
           onTouchMove={this.onTouchMove}
           onTouchEnd={this.onTouchEnd}
+          onScroll={this.onScroll}
         >
           {children}
         </div>
@@ -119,6 +130,8 @@ ScrollView.defaultProps = {
   loading: false,
   hide: false,
   requestLoading: null,
+  bottomOffset: 100,
+  onScrollBottom: null,
 };
 
 ScrollView.propTypes = {
@@ -127,6 +140,8 @@ ScrollView.propTypes = {
   requestLoading: PropTypes.func,
   loading: PropTypes.bool,
   hide: PropTypes.bool,
+  onScrollBottom: PropTypes.func,
+  bottomOffset: PropTypes.number,
 };
 
 export default ScrollView;
