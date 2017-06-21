@@ -4,11 +4,29 @@ import cx from 'classnames';
 import cn from './ScrollView.less';
 import loadingIcon from '../img/loading.png';
 
+const TriggleDis = 50;
+
 class ScrollView extends React.PureComponent {
-  state = {
-    ly: 0,
-    sy: 0,
-    transition: false,
+  constructor(props) {
+    super(props);
+    this.state = {
+      ly: props.loading ? TriggleDis : 0,
+      sy: props.loading ? TriggleDis : 0,
+      transition: true,
+    };
+  }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.loading !== this.props.loading) {
+      if (nextProps.loading) {
+        this.scrollTo(0);
+        this.setState({ ly: TriggleDis, sy: TriggleDis });
+      } else {
+        this.setState({ ly: 0, sy: 0 });
+      }
+    }
+  }
+  componentWillUnmount() {
+    this.unmounted = true;
   }
   onTouchStart = (e) => {
     this.startY = e.touches ? e.touches[0].pageY : e.pageY;
@@ -24,45 +42,44 @@ class ScrollView extends React.PureComponent {
     (wrap.scrollHeight - wrap.scrollTop === wrap.offsetHeight);
     if (isAtTop || isAtBottom) {
       e.preventDefault();
-      if (isAtTop) {
+      if (isAtTop && !!this.props.requestLoading) {
         const d = curY - startY;
         const { maxMove } = this.props;
         const translateY = maxMove * (d / (d + (maxMove * 1.5)));
-        this.setState({ ly: translateY, sy: translateY });
+        this.setState({ ly: translateY, sy: translateY, transition: false });
       }
-    } else if (wrap.scrollTop < 0) {
+    } else if (wrap.scrollTop < 0 && !!this.props.requestLoading) {
       this.setState({ ly: -wrap.scrollTop, sy: 0 });
     }
   }
   onTouchEnd = () => {
     const { ly } = this.state;
+    this.setState({ transition: true });
     if (ly !== 0) {
       this.setState({ ly, sy: ly });
-      const { refreshCallBack } = this.props;
-      if (ly >= 50 && !!refreshCallBack) {
-        this.begginLoad();
+      const { requestLoading } = this.props;
+      if (ly >= 50 && !!requestLoading) {
+        requestLoading();
       } else {
         setTimeout(() => {
-          this.setState({ ly: 0, sy: 0, transition: true });
+          if (!this.unmounted) {
+            this.setState({ ly: 0, sy: 0, transition: true });
+          }
         }, 0);
       }
     }
   }
-  begginLoad = () => {
-    const { refreshCallBack } = this.props;
-    if (refreshCallBack) {
-      setTimeout(() => {
-        this.setState({ ly: 50, sy: 50, transition: true });
-        refreshCallBack(() => this.setState({ ly: 0, sy: 0 }));
-      }, 0);
+  scrollTo = (scrollTop) => {
+    if (this.wrap) {
+      this.wrap.scrollTop = scrollTop;
     }
   }
   render() {
-    const { children } = this.props;
+    const { children, hide } = this.props;
     const { ly, sy, transition } = this.state;
     return (
       <div
-        className={cn.scrollview}
+        className={cx(cn.scrollview, { [cn.hide]: hide })}
       >
         <div
           className={cx(cn.loader, { [cn.transition]: transition })}
@@ -74,7 +91,7 @@ class ScrollView extends React.PureComponent {
           <img
             src={loadingIcon}
             alt="loading"
-            className={cx({ [cn.spinner]: ly >= 50 })}
+            className={cx({ [cn.spinner]: ly >= TriggleDis })}
           />
         </div>
         <div
@@ -99,13 +116,17 @@ class ScrollView extends React.PureComponent {
 
 ScrollView.defaultProps = {
   maxMove: 300,
-  refreshCallBack: null,
+  loading: false,
+  hide: false,
+  requestLoading: null,
 };
 
 ScrollView.propTypes = {
   children: PropTypes.node.isRequired,
   maxMove: PropTypes.number,
-  refreshCallBack: PropTypes.func,
+  requestLoading: PropTypes.func,
+  loading: PropTypes.bool,
+  hide: PropTypes.bool,
 };
 
 export default ScrollView;

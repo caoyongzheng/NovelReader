@@ -9,7 +9,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "NODE_ENV=development ./node_modules/.bin/webpack-dashboard -- ./node_modules/.bin/webpack-dev-server",
-    "build": "NODE_ENV=production ./node_modules/.bin/webpack -p"
+    "build": "NODE_ENV=production ./node_modules/.bin/webpack-dashboard -- ./node_modules/.bin/webpack -p"
   },
   "dependencies": {
     "alloytouch": "^0.2.5",

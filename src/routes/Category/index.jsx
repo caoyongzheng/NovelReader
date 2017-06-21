@@ -15,10 +15,20 @@ const kinds = [
 ];
 
 class Category extends React.PureComponent {
-  componentDidMount() {
-    if (!this.props.category.getted) {
-      this.scroller.begginLoad();
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: !props.category.getted,
+    };
+    if (this.state.loading) {
+      this.props.getCategory()
+      .then(() => this.setState({ loading: false }));
     }
+  }
+  requestLoading = () => {
+    this.setState({ loading: true });
+    this.props.getCategory()
+    .then(() => this.setState({ loading: false }));
   }
   handleTap = (gender, major) => {
     const { search, push } = this.props;
@@ -28,14 +38,15 @@ class Category extends React.PureComponent {
     push(`/category/detail?${qs.stringify(qsObj)}`);
   }
   render() {
-    const { replace, category, getCategory } = this.props;
+    const { replace, category } = this.props;
+    const { loading } = this.state;
     return (
       <div className={cn.route}>
         <Header title="分类" />
         <Body>
           <ScrollView
-            ref={scroller => (this.scroller = scroller)}
-            refreshCallBack={getCategory}
+            requestLoading={this.requestLoading}
+            loading={loading}
           >
             {kinds.map(({ key, name }) =>
               (<div key={key} className={cn.kind}>
