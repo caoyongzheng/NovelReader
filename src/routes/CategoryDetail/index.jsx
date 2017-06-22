@@ -139,6 +139,7 @@ class CategoryDetail extends React.PureComponent {
   }
   render() {
     const {
+      history,
       search,
       categoryL2: { male, female, press },
     } = this.props;
@@ -185,6 +186,7 @@ class CategoryDetail extends React.PureComponent {
                 <BookList
                   key={k}
                   id={k}
+                  push={history.push}
                   hide={!isEqual(qs.parse(k), activeObj)}
                   loading={this.state[`${k}_loading`]}
                   list={categoryBooks[k].list}

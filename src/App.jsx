@@ -1,9 +1,11 @@
 import React from 'react';
 import { HashRouter as Router, Route, Redirect } from 'react-router-dom';
+import get from 'lodash/get';
 import Bookshelf from './routes/Bookshelf';
 import Category from './routes/Category';
 import CategoryDetail from './routes/CategoryDetail';
 import Ranking from './routes/Ranking';
+import Book from './routes/Book';
 
 class App extends React.PureComponent {
   state = {
@@ -92,6 +94,15 @@ class App extends React.PureComponent {
           <Route
             path="/ranking"
             render={({ history: { push, replace } }) => <Ranking push={push} replace={replace} />}
+          />
+          <Route
+            path="/book/:id"
+            render={({ history, match }) => (
+              <Book
+                id={get(match, ['params', 'id'], '')}
+                history={history}
+              />
+            )}
           />
         </div>
       </Router>

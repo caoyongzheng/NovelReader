@@ -8,7 +8,7 @@ import ScrollView from '../../components/ScrollView';
 class BookList extends React.PureComponent {
   render() {
     const {
-      id: k, list, hide, loading,
+      id: k, list, hide, loading, push,
       requestLoading, onScrollBottom, getting,
     } = this.props;
     return (
@@ -19,7 +19,7 @@ class BookList extends React.PureComponent {
         onScrollBottom={() => onScrollBottom(k)}
       >
         {list.map(({ _id: id, ...others }) => (
-          <BookItem key={id} id={id} {...others} />
+          <BookItem key={id} id={id} {...others} push={push} />
         ))}
         {getting ? (
           <div className={cn.loading}>{'加载中...'}</div>
@@ -39,6 +39,7 @@ BookList.propTypes = {
   requestLoading: PropTypes.func.isRequired,
   onScrollBottom: PropTypes.func.isRequired,
   list: PropTypes.arrayOf(shapes.Book).isRequired,
+  push: PropTypes.func.isRequired,
 };
 
 export default BookList;

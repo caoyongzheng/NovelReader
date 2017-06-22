@@ -30,7 +30,9 @@ class ScrollView extends React.PureComponent {
   }
   onTouchStart = (e) => {
     this.startY = e.touches ? e.touches[0].pageY : e.pageY;
-    this.setState({ transition: false });
+    if (this.props.requestLoading) {
+      this.setState({ transition: false });
+    }
   }
   onTouchMove = (e) => {
     const startY = this.startY;
@@ -54,9 +56,8 @@ class ScrollView extends React.PureComponent {
   }
   onTouchEnd = () => {
     const { ly } = this.state;
-    this.setState({ transition: true });
     if (ly !== 0) {
-      this.setState({ ly, sy: ly });
+      this.setState({ ly, sy: ly, transition: true });
       const { requestLoading } = this.props;
       if (ly >= 50 && !!requestLoading) {
         requestLoading();
