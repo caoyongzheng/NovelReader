@@ -5,7 +5,9 @@ import cn from './Header.less';
 function Header({ left, title, right }) {
   return (
     <div className={cn.header}>
-      <div className={cn.left}>{left}</div>
+      <div className={cn.left}>
+        {left}
+      </div>
       <div className={cn.center}>{title}</div>
       <div className={cn.right}>{right}</div>
     </div>

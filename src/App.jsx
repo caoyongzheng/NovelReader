@@ -79,11 +79,10 @@ class App extends React.PureComponent {
           />
           <Route
             path="/category/detail"
-            render={({ history: { push, replace, location } }) => (
+            render={({ history }) => (
               <CategoryDetail
-                search={location.search}
-                push={push}
-                replace={replace}
+                history={history}
+                search={history.location.search}
                 categoryL2={categoryL2}
                 getCategoryBookList={this.getCategoryBookList}
                 getCategoryL2={this.getCategoryL2}

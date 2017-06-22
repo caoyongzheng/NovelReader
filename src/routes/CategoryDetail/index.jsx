@@ -10,6 +10,8 @@ import Body from '../../components/Body';
 import Filter from './Filter';
 import BookList from './BookList';
 import handleReject from '../../utils/handleReject';
+import shapes from '../../shapes';
+import svgIcons from '../../img/svg-icons.svg';
 
 const filter1 = [
   { key: 'hot', name: '热门' },
@@ -51,20 +53,20 @@ class CategoryDetail extends React.PureComponent {
     });
   }
   onFilter1Select = (key) => {
-    const { search, replace } = this.props;
+    const { search, history } = this.props;
     const searchObj = qs.parse(search);
     searchObj.type = key;
-    replace(`/category/detail?${qs.stringify(searchObj)}`);
+    history.replace(`/category/detail?${qs.stringify(searchObj)}`);
   }
   onFilter2Select = (key) => {
-    const { search, replace } = this.props;
+    const { search, history } = this.props;
     const searchObj = qs.parse(search);
     if (key === 'all') {
       searchObj.minor = '';
     } else {
       searchObj.minor = key;
     }
-    replace(`/category/detail?${qs.stringify(searchObj)}`);
+    history.replace(`/category/detail?${qs.stringify(searchObj)}`);
   }
   getCategoryBookList = (searchObj, cb) => {
     const search = qs.stringify(searchObj);
@@ -128,6 +130,13 @@ class CategoryDetail extends React.PureComponent {
     { key: 'all', name: '全部' },
     ...mins.map(m => ({ key: m, name: m })),
   ])
+  handleGoBack = () => {
+    if (this.props.history.action === 'POP') {
+      this.props.history.push('/category');
+    } else {
+      this.props.history.goBack();
+    }
+  }
   render() {
     const {
       search,
@@ -142,7 +151,17 @@ class CategoryDetail extends React.PureComponent {
     const activeObj = qs.parse(this.getCategoryKey(search));
     return (
       <div className={cn.route}>
-        <Header title={major} />
+        <Header
+          left={(
+            <svg
+              className={cn.goBackIcon}
+              onClick={this.handleGoBack}
+            >
+              <use xlinkHref={`${svgIcons}#circle-cross`} />
+            </svg>
+          )}
+          title={major}
+        />
         <Body bottom="0px" className={cn.body}>
           <Filter
             key="filter1"
@@ -186,7 +205,6 @@ CategoryDetail.defaultProps = {};
 
 CategoryDetail.propTypes = {
   search: PropTypes.string.isRequired,
-  replace: PropTypes.func.isRequired,
   getCategoryL2: PropTypes.func.isRequired,
   categoryL2: PropTypes.shape({
     male: PropTypes.array.isRequired,
@@ -194,6 +212,7 @@ CategoryDetail.propTypes = {
     press: PropTypes.array.isRequired,
     getted: PropTypes.bool.isRequired,
   }).isRequired,
+  history: shapes.History.isRequired,
 };
 
 export default CategoryDetail;

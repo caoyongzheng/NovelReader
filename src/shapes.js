@@ -13,6 +13,15 @@ const Book = PropTypes.shape({
   tags: PropTypes.arrayOf(PropTypes.string),
 });
 
+const History = PropTypes.shape({
+  goBack: PropTypes.func,
+  push: PropTypes.func,
+  replace: PropTypes.func,
+  action: PropTypes.string,
+  location: PropTypes.object,
+});
+
 export default {
   Book,
+  History,
 };
