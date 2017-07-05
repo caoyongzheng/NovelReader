@@ -6,6 +6,7 @@ import Category from './routes/Category';
 import CategoryDetail from './routes/CategoryDetail';
 import Ranking from './routes/Ranking';
 import Book from './routes/Book';
+import Reader from './routes/Reader';
 
 class App extends React.PureComponent {
   state = {
@@ -99,6 +100,15 @@ class App extends React.PureComponent {
             path="/book/:id"
             render={({ history, match }) => (
               <Book
+                id={get(match, ['params', 'id'], '')}
+                history={history}
+              />
+            )}
+          />
+          <Route
+            path="/reader/:id"
+            render={({ history, match }) => (
+              <Reader
                 id={get(match, ['params', 'id'], '')}
                 history={history}
               />

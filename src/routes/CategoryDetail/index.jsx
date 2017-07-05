@@ -158,7 +158,7 @@ class CategoryDetail extends React.PureComponent {
               className={cn.goBackIcon}
               onClick={this.handleGoBack}
             >
-              <use xlinkHref={`${svgIcons}#circle-cross`} />
+              <use xlinkHref={`${svgIcons}#goBack`} />
             </svg>
           )}
           title={major}
