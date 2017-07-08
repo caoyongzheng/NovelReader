@@ -1,0 +1,41 @@
+.container {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  background-color: #FFFFFF;
+  z-index: 1;
+}
+
+.list {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 50px;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.item {
+  height: 40px;
+  line-height: 40px;
+  padding: 0 14px;
+  border-bottom: solid 1px #EEEEEE;
+  &:last-child {
+    border-bottom: 0;
+  }
+}
+
+.footer {
+  border-top: solid 1px #EEEEEE;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  background-color: #FFFFFF;
+}

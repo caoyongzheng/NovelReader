@@ -12,5 +12,8 @@
   ecmaFeatures: {
     jsx: true,
     modules: true,
+  },
+  rules: {
+    'react/no-array-index-key': 0,
   }
 }

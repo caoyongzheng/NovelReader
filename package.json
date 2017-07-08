@@ -12,9 +12,7 @@
     "build": "NODE_ENV=production ./node_modules/.bin/webpack -p"
   },
   "dependencies": {
-    "alloytouch": "^0.2.5",
     "classnames": "^2.2.5",
-    "global": "^4.3.2",
     "lodash": "^4.17.4",
     "prop-types": "^15.5.10",
     "querystringify": "^1.0.0",
@@ -22,7 +20,6 @@
     "react-dom": "^15.6.0",
     "react-router": "^4.1.1",
     "react-router-dom": "^4.1.1",
-    "react-tappable": "^1.0.0",
     "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {

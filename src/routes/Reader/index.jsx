@@ -21,7 +21,6 @@ class Reader extends React.PureComponent {
     .then(() => this.getChapterList(get(this.state.sources, ['0', '_id'])))
     .then((chapters) => {
       const link = get(chapters, ['0', 'link']);
-      console.log(link);
       if (link) this.getChapter(link);
     });
   }
@@ -47,7 +46,6 @@ class Reader extends React.PureComponent {
     }).catch(handleReject);
   }
   getChapter = (link) => {
-    console.log(link);
     const url = `https://chapterup.zhuishushenqi.com/chapter/${link}`;
     return fetch(`${process.env.PROXY_API}?url=${encodeURIComponent(url)}`, {
       mode: 'cors',
@@ -65,14 +63,24 @@ class Reader extends React.PureComponent {
       }
     }).catch(handleReject);
   }
+  handleListClose = () => this.setState({ showList: false })
+  handleListShow = () => this.setState({ showList: true })
   render() {
     const { chapters, showList, chapter } = this.state;
     return (
       <div className={cn.container}>
         {
-          showList ? <ChapterList chapters={chapters} /> : null
+          showList ? (
+            <ChapterList
+              chapters={chapters}
+              requestClose={this.handleListClose}
+            />
+          ) : null
         }
-        <ChapterReader chapter={chapter} />
+        <ChapterReader
+          chapter={chapter}
+          requestListShow={this.handleListShow}
+        />
       </div>
     );
   }
