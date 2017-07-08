@@ -8,7 +8,7 @@ const DashboardPlugin = require('webpack-dashboard/plugin');
 const getHostIp = require('./scripts/getHostIp');
 
 const isProduction = process.env.NODE_ENV === 'production';
-const publicPath = isProduction ? '/NovelReader/dist/' : '/dist/';
+const publicPath = isProduction ? '/NovelReader/' : '/dist/';
 const port = 9000;
 
 console.log(`open: http://${getHostIp()}:${port}/dist/`);
@@ -84,6 +84,7 @@ const config = {
       'process.env': {
         NODE_ENV: JSON.stringify(process.env.NODE_ENV),
         PROXY_API: JSON.stringify('https://api.caoyongzheng.com/proxy'),
+        // PROXY_API: JSON.stringify('http://localhost:3000/proxy'),
       },
     }),
     new ExtractTextPlugin({
