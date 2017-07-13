@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
+import anime from 'animejs';
 import cn from './ScrollView.less';
 import loadingIcon from '../img/loading.png';
 
@@ -88,7 +89,12 @@ class ScrollView extends React.PureComponent {
   prePage = () => {
     const { scrollTop, offsetHeight } = this.wrap;
     if (scrollTop !== 0) {
-      this.wrap.scrollTop -= offsetHeight;
+      anime({
+        targets: this.wrap,
+        easing: 'linear',
+        duration: 200,
+        scrollTop: Math.max(this.wrap.scrollTop - offsetHeight, 0),
+      });
     }
   }
   nextPage = () => {
@@ -96,11 +102,16 @@ class ScrollView extends React.PureComponent {
     const scrollDist = scrollHeight - offsetHeight;
     const scrollFromBottom = scrollDist - scrollTop;
     if (scrollFromBottom !== 0) {
-      this.wrap.scrollTop += offsetHeight;
+      anime({
+        targets: this.wrap,
+        easing: 'linear',
+        duration: 200,
+        scrollTop: Math.min(this.wrap.scrollTop + offsetHeight, scrollHeight),
+      });
     }
   }
   render() {
-    const { children, hide } = this.props;
+    const { children, hide, contentCN } = this.props;
     const { ly, sy, transition } = this.state;
     return (
       <div
@@ -121,7 +132,7 @@ class ScrollView extends React.PureComponent {
         </div>
         <div
           className={
-            cx(cn.scrollContent, { [cn.transition]: transition })
+            cx(cn.scrollContent, { [cn.transition]: transition }, contentCN)
           }
           ref={wrap => (this.wrap = wrap)}
           style={{
@@ -147,6 +158,7 @@ ScrollView.defaultProps = {
   requestLoading: null,
   bottomOffset: 100,
   onScrollBottom: null,
+  contentCN: null,
 };
 
 ScrollView.propTypes = {
@@ -157,6 +169,7 @@ ScrollView.propTypes = {
   hide: PropTypes.bool,
   onScrollBottom: PropTypes.func,
   bottomOffset: PropTypes.number,
+  contentCN: PropTypes.string,
 };
 
 export default ScrollView;

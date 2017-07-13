@@ -29,13 +29,16 @@ class ChapterReader extends React.PureComponent {
   render() {
     const { title, content } = this.props.chapter;
     return (
-      <ScrollView ref={r => (this.scrollView = r)}>
+      <ScrollView
+        ref={r => (this.scrollView = r)}
+        contentCN={cn.container}
+      >
         <Tappable onTap={this.handleTap}>
-          <div className={cn.container}>
+          <div>
             <div className={cn.title}>{title}</div>
             <pre className={cn.content}>
               {content.split('\n').map((p, i) => (
-                <p key={i} className={cn.paragraph}>{p}</p>
+                <p key={i} className={cn.paragraph}>{p.trim()}</p>
               ))}
             </pre>
           </div>

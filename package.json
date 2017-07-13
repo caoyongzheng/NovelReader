@@ -12,6 +12,7 @@
     "build": "NODE_ENV=production ./node_modules/.bin/webpack -p"
   },
   "dependencies": {
+    "animejs": "^2.0.2",
     "classnames": "^2.2.5",
     "lodash": "^4.17.4",
     "normalize.css": "^7.0.0",
